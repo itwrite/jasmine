@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="../css/jquery-tab.css"/>
+
+    <!--<link href="../../../bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet">-->
+
+
+    <!-- ============== Jquery ============== -->
+    <script src="../../../jquery-1.11.1.min.js"></script>
+    <script src="../jquery-tab.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var _jasmineTab = $("body").jasmineTab({
+                maxTabs:7,
+                onClick: function (data) {
+                    console.log(data);
+                }
+            }).add().add({id:"1",title:"测试1"}).add({id:"2",title:"测试2"}).add({id:"3",title:"测试4"});
+        });
+    </script>
+</head>
+<body>
+<ul role="nav-tabs">
+    <li role="nav-tabs-item" class="active"><a href="#">Home</a></li>
+    <li role="nav-tabs-item"><a href="#">Profile</a></li>
+    <li role="nav-tabs-item"><a href="#">Messages</a></li>
+</ul>
+</body>
+</html>

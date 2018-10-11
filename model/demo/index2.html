@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="lib/require.js"></script>
+    <script>
+        require.config({
+            baseUrl: "./",
+            paths: {
+                // the left side is the module ID,
+                // the right side is the path to
+                // the jQuery file, relative to baseUrl.
+                // Also, the path should NOT include
+                // the '.js' file extension. This example
+                // is using jQuery 1.9.0 located at
+                // js/lib/jquery-1.9.0.js, relative to
+                // the HTML page.
+                model: '../model-1.2.1'
+            },
+            shim: {
+            }
+        });
+    </script>
+</head>
+<body>
+<script>
+    function randomNum(minNum,maxNum){
+        switch(arguments.length){
+            case 1:
+                return parseInt(Math.random()*minNum+1,10);
+                break;
+            case 2:
+                return parseInt(Math.random()*(maxNum-minNum+1)+minNum,10);
+                break;
+            default:
+                return 0;
+                break;
+        }
+    }
+
+    require(['model'], function (M) {
+        var Model = M;
+        var users = [
+            {id:1,name:'张三',dept:"1"},
+            {id:2,name:'李四',dept:"1"},
+            {id:3,name:'王五',dept:"3"},
+            {id:4,name:'蔡森',dept:"2"}
+        ];
+
+//        return;
+        console.log("length",users.length)
+        var roles = [
+            {id:1,name:"管理员"},
+            {id:2,name:"编辑"},
+            {id:3,name:"普通会员"}
+        ];
+        var user_role_relations = [
+            {uid:1,rid:2},
+            {uid:3,rid:2},
+            {uid:2,rid:1},
+            {uid:4,rid:1}
+        ];
+
+        var lst = M(users, function (row) {
+            return row['dept'] == '1'
+        });
+        console.log('lst',lst);
+        var results = M().debug(true).from(users).join('id',user_role_relations,'ur.uid').join('ur.rid',roles,'r.id').select("name as gggg");
+
+        var newData = [];
+        for(var i = 0; i<10000;i++){
+            var l = randomNum(i,100000);
+            for(var j in results){
+
+                var obj = results[j];
+                obj.text = "随机数:"+(l);
+                newData.push(obj);
+            }
+        }
+
+        var db = {};
+        db['newData'] = {};
+
+        for(i in newData){
+            var row = newData[i];
+
+        }
+
+        /**
+         * ========================================================
+         */
+        var categories = [{ id: 2, name: "cat1" }, { id: 4, name: "cat2" }];
+        var goods = [{ id: 1, cid: 2, name: "goods1" }, { id: 2, cid: 4, name: "goods2" }];
+        var attrs = [{ id: 1, gid: 1, name: "goods1_attr" }, { id: 2, gid: 2, name: "goods2_attr" }];
+
+//        Example 1:
+
+        var list = Model(goods)
+                .debug(true)
+                .join("cid", categories, 'c.id')
+                .join("id", attrs, 'a.gid')
+//.fields('*')
+                .fields(['c.id as cid2', 'c.name as 分类名称','a.name as 属性名称'])
+//.where({"id":"2"})
+                .where_between('c.id', [1, 100])
+                .where_like('a.name', 'goods')
+                .where_in("c.id", [2, 4])
+                .order_by({ "id": 'desc', "cid": 1 })
+                .limit(0, 10)
+                .select();
+
+        console.log(list);
+
+
+
+//        Example 2:
+        Model(goods).where({id:1}).update({name:"商品1"});
+        console.log(goods);
+
+
+
+//        Example 3:
+        Model(categories).where({id:4}).remove();
+        console.log(categories);
+
+
+
+//        Example 4:
+        Model(goods)
+                .where({"id":"2"})
+                .fetch(function (i, row) {
+                //The fetch funciton, if you give it a callback Function as paramter,
+                //then it will be call when foreach very item of result;
+                    console.log('each row:',row);
+                });
+
+//        Example 5:
+        var one = Model(goods).where({"id":"2"}).find();
+        console.log(one);
+    })
+</script>
+</body>
+</html>

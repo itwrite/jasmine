@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="../css/jquery-layout.css"/>
+    <script src="../lib/require.js"></script>
+    <script>
+        require.config({
+            baseUrl: './',
+            paths: {
+                // the left side is the module ID,
+                // the right side is the path to
+                // the jQuery file, relative to baseUrl.
+                // Also, the path should NOT include
+                // the '.js' file extension. This example
+                // is using jQuery 1.9.0 located at
+                // js/lib/jquery-1.9.0.js, relative to
+                // the HTML page.
+                jquery: '../lib/jquery-1.11.1.min',
+                layout: '../jquery-layout.1.0.2'
+            }
+        });
+    </script>
+
+    <style>
+
+        [region='east'],[region='south'],[region='west'],[region='north'],[region='center']{
+            border:3px solid red;
+        }
+
+
+    </style>
+</head>
+<body>
+
+
+    <!-- right -->
+    <div region="center"  id="test" style="padding: 5px">
+
+            <!-- header -->
+            <div region="north" style="height: 100px;">
+
+            </div>
+            <!-- header -->
+            <!-- left -->
+            <div region="west" title="test">
+                <button id="colseup" type="button">TEST</button>
+
+            </div>
+            <!-- left -->
+
+            <!-- center -->
+            <div region="center" style="width: 50%;">
+
+                asdfasf
+
+            </div>
+            <!-- center -->
+
+            <!-- right -->
+            <div region="east">
+
+            </div>
+            <!-- right -->
+
+            <!-- footer -->
+            <div region="south">
+                <div class="alert alert-danger">
+                    Warning! Better check yourself, you're not looking too good.
+                </div>
+            </div>
+            <!-- footer -->
+        </div>
+
+<script type="text/javascript">
+    require(['jquery','layout'], function ($) {
+        $('body,#test').jasmineLayout({
+            splitPanels: [ "east","west", "south", "north"],
+            splitWidth: 2,
+            onInit: function () {
+                console.log("init");
+            },
+            onResize:function(){
+                console.log("resize");
+            }
+        });
+
+        $("#colseup").click(function () {
+            var width = $(this).closest("[region='west']").width();
+            if(width==50){
+                $(this).closest("[region='west']").width(200);
+            }else{
+                $(this).closest("[region='west']").width(50);
+            }
+            $('#test').jasmineLayout('makeup');
+        });
+    });
+</script>
+</body>
+</html>

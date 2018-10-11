@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript" src="../model-1.2.1.js"></script>
+    <style>
+        td{border:1px solid #ddd}
+        tr:hover,tr:hover~tr:not(:last-child){
+            background: rgba(66, 165, 245, 0.2);
+        }
+    </style>
+</head>
+<body>
+<table style="width: 100%;">
+    <tbody>
+        <tr>
+            <td rowspan="3">col 1</td>
+            <td>col 2</td>
+            <td>col 3</td>
+        </tr>
+        <tr>
+
+            <td rowspan="2">col 2</td>
+            <td>col 3</td>
+        </tr>
+        <tr>
+            <td>col 3</td>
+        </tr>
+        <tr>
+            <td>col 1</td>
+            <td>col 2</td>
+            <td>col 3</td>
+        </tr>
+
+        <tr>
+            <td rowspan="3">col 1</td>
+            <td>col 2</td>
+            <td>col 3</td>
+        </tr>
+        <tr>
+
+            <td rowspan="2">col 2</td>
+            <td>col 3</td>
+        </tr>
+        <tr>
+            <td>col 3</td>
+        </tr>
+        <tr>
+            <td>col 1</td>
+            <td>col 2</td>
+            <td>col 3</td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>
+<script>
+    function randomNum(minNum,maxNum){
+        switch(arguments.length){
+            case 1:
+                return parseInt(Math.random()*minNum+1,10);
+                break;
+            case 2:
+                return parseInt(Math.random()*(maxNum-minNum+1)+minNum,10);
+                break;
+            default:
+                return 0;
+                break;
+        }
+    }
+    (function () {
+        var users = [
+            {id:1,name:'张三',dept:"1"},
+            {id:2,name:'李四',dept:"1"},
+            {id:3,name:'王五',dept:"3"},
+            {id:4,name:'蔡森',dept:"2"}
+        ];
+
+//        return;
+        console.log("length",users.length)
+        var roles = [
+            {id:1,name:"管理员"},
+            {id:2,name:"编辑"},
+            {id:3,name:"普通会员"}
+        ];
+        var user_role_relations = [
+            {uid:1,rid:2},
+            {uid:3,rid:2},
+            {uid:2,rid:1},
+            {uid:4,rid:1}
+        ];
+
+        var results = Model(users).debug(true).join('id',user_role_relations,'ur.uid').join('ur.rid',roles,'r.id').select("name   as  gggg");
+
+        console.log(results)
+        var newData = [];
+        for(var i = 0; i<10000;i++){
+            var l = randomNum(i,100000);
+            for(var j in results){
+
+                var obj = results[j];
+                obj.text = "随机数:"+(l);
+                newData.push(obj);
+            }
+        }
+
+        var db = {};
+        db['newData'] = {};
+
+        for(i in newData){
+            var row = newData[i];
+
+        }
+
+        console.log(newData);
+//        var lst = M(newData).fields('text').where_like('text','%22%').select();
+//        console.log(lst);
+    })();
+</script>

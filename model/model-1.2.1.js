@@ -6,9 +6,21 @@
  */
 
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-        typeof define === 'function' && define.amd ? define(factory) :
-            (global.M = global.Model = factory());
+    // 检测上下文环境是否为AMD或CMD
+  var hasDefine = typeof define === 'function',
+  // 检查上下文环境是否为Node
+  hasExports = typeof module !== 'undefined' && module.exports;
+  
+  if (hasDefine) {
+      // AMD环境或CMD环境
+      define(factory);
+  } else if (hasExports) {
+      // 定义为普通Node模块
+      module.exports = factory();
+  } else {
+      // 将模块的执行结果挂在window变量中，在浏览器中this指向window对象
+      global.M = global.Model = factory();
+  }
 }(typeof window !== "undefined" ? window : this, function () {
     var __debug = true,
         __bindings = {},
